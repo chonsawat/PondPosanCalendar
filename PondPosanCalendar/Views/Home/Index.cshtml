@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Calendar";
+    int differentDate = 0;
+}
+<div class="text-center">
+    <form id="form1" method="get" action="/">
+
+        <div>
+            <h3> Your Birthday:</h3>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="mx-2">
+                <p>Start Date:</p><input name="startDate" type="date" required>
+            </div>
+            <div class="mx-2">
+                <p>End Date:</p><input name="endDate" type="date" required>
+            </div>
+        </div>
+        <div class="mt-3">
+            <input class="btn btn-success mb-3" type="submit" value="Calculate Difference Date" />
+        </div>
+    </form>
+    <div>
+        @{
+            /* This bad C# coding styles in ASP.NET, Please make as MVC pattern will better for developer's team  na krub */
+            // Check if pressed submit will calculate difference between startDate and endDate
+            if ((@Context.Request.Query["startDate"].Count() == 1) && (@Context.Request.Query["endDate"].Count() == 1))
+            {
+                // Check if not empty string
+                if ((@Context.Request.Query["startDate"] != "") && (@Context.Request.Query["endDate"] != ""))
+                {
+                    string startDateString = @Context.Request.Query["startDate"];
+                    string endDateString = @Context.Request.Query["endDate"];
+
+                    DateTime startDateTime = DateTime.Parse(startDateString);
+                    DateTime endDateTime = DateTime.Parse(endDateString);
+
+                    // calculate difference date
+                    TimeSpan diff = endDateTime - startDateTime;
+                    differentDate = Math.Abs(diff.Days);
+
+                    // HTML Element will render while submit
+                    <p>Difference of date is: <b>@differentDate</b> day(s)</p>
+                    <div class="d-flex justify-content-center">
+                        <p style="margin-right: 15px">Start: @startDateTime</p>
+                        <p>End: @endDateTime</p>
+                    </div>
+                }
+                else
+                {
+                    <div><p>Please check your request is NULL!</p></div>
+                }
+
+            }
+            else
+            {
+                <p>Difference of date is: @differentDate day(s)</p>
+            }
+
+        }
+    </div>
+</div>
